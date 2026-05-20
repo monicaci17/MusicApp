@@ -1,13 +1,11 @@
 package com.mexiti.foodcal.ui.screens
 
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -20,20 +18,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
 import com.mexiti.foodcal.R
-import com.mexiti.foodcal.model.DayFood
-import com.mexiti.foodcal.model.DayRepository
-import com.mexiti.foodcal.ui.theme.FoodAppTheme
+import com.mexiti.foodcal.model.DailyFood
+import coil3.request.ImageRequest
+import coil3.request.crossfade
+
+
 
 
 @Composable
 fun CardDayInfo(
-    dayFood: DayFood,
+    dayFood: DailyFood,
     modifier: Modifier = Modifier
 ){
     Card(
@@ -46,9 +46,9 @@ fun CardDayInfo(
             .padding(8.dp)
     ) {
         Column {
-            DayTitle(day = dayFood.day, title =dayFood.title )
+            DayTitle(day = dayFood.day, title = dayFood.title )
             Spacer(modifier = modifier.height(dimensionResource(id = R.dimen.space_component)))
-            ShowImage(imageRes = dayFood.imageRes)
+            ShowImage(imageRes = dayFood.image)
             Spacer(modifier = modifier.height(dimensionResource(id = R.dimen.space_component)))
             BodyContent(body = dayFood.description)
         }
@@ -61,7 +61,7 @@ fun CardDayInfo(
 
 @Composable
 fun ShowImage(
-    @DrawableRes imageRes:Int,
+    imageRes: String,
     modifier: Modifier = Modifier
 ){
     Box(modifier =
@@ -72,19 +72,25 @@ fun ShowImage(
         .border(BorderStroke(1.dp, MaterialTheme.colorScheme.onBackground)),
         contentAlignment = Alignment.Center
     ) {
-        Image(
-            painter = painterResource(id = imageRes),
-            contentDescription = null,
-            contentScale = ContentScale.FillBounds,
-            modifier = modifier.fillMaxWidth()
+        AsyncImage(
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(imageRes)
+                .crossfade(true)
+                .build(),
+            contentDescription = "Receta",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxSize()
         )
+
     }
 }
 
+
+
 @Composable
 fun DayTitle(
-    @StringRes day: Int,
-    @StringRes title: Int,
+    day: Int,
+    title: String,
     modifier: Modifier = Modifier
 ){
     Column(
@@ -93,12 +99,12 @@ fun DayTitle(
             .padding(dimensionResource(id = R.dimen.padding_component))
     ) {
         Text(
-            text = stringResource(id = day),
+            text = day.toString(),
             style = MaterialTheme.typography.titleLarge
         )
         Spacer(modifier = Modifier.height(10.dp))
         Text(
-            text = stringResource(id = title),
+            text = title,
             style = MaterialTheme.typography.headlineSmall,
         )
     }
@@ -106,11 +112,11 @@ fun DayTitle(
 
 @Composable
 fun BodyContent(
-    @StringRes body: Int,
+    body: String,
     modifier: Modifier = Modifier
 ){
     Text(
-        text = stringResource(id = body),
+        text = body,
         style = MaterialTheme.typography.bodyLarge,
         modifier = modifier
             .width(dimensionResource(id = R.dimen.width_size))
@@ -118,44 +124,6 @@ fun BodyContent(
                 dimensionResource(id = R.dimen.padding_component)
             )
     )
-
-}
-
-
-
-@Preview(showBackground = true)
-@Composable
-fun CardDayInfoPreview(){
-    FoodAppTheme {
-        CardDayInfo(dayFood = DayRepository.days[0] )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DayTitlePreview(){
-    DayTitle(day = R.string.day1,
-        title = R.string.foodBrocoli1)
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun ShowImagePreview(){
-    FoodAppTheme {
-        ShowImage(imageRes = R.drawable.sandwich_fresas)
-    }
-
-}
-
-@Preview(showBackground = true)
-@Composable
-fun BodyContentPreview(){
-    FoodAppTheme {
-        BodyContent(
-            R.string.description1
-        )
-    }
 
 }
 

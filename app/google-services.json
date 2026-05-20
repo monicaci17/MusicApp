@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "659405232957",
+    "project_id": "foodcal-aaa8e",
+    "storage_bucket": "foodcal-aaa8e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:659405232957:android:66d3f62cfd1b524f2cc354",
+        "android_client_info": {
+          "package_name": "com.mexiti.foodcal"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcnDWKsjMfs1_2oSq_GuiiXU5OX09ZPfk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
